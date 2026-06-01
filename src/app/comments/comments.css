@@ -1,0 +1,66 @@
+.comments {
+  margin-top: 1.5rem;
+}
+
+.comments h2 {
+  margin: 0 0 0.75rem;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.status {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+.comment-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.comment-card {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #ffffff;
+}
+
+.comment-card h3,
+.comment-card p {
+  margin: 0;
+}
+
+.comment-card h3 {
+  color: #111827;
+  font-size: 1rem;
+}
+
+.comment-card p {
+  margin-top: 0.35rem;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.comment-card dl {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.2rem 0.5rem;
+  margin: 0.65rem 0 0;
+  color: #4b5563;
+  font-size: 0.8rem;
+}
+
+.comment-card dt {
+  font-weight: 600;
+}
+
+.comment-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

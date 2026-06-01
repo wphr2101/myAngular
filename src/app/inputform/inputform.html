@@ -1,0 +1,62 @@
+<section class="inputform">
+  <h2>Input Form</h2>
+  <form [formGroup]="inputForm" (ngSubmit)="showFormValues()">
+    <label>
+      Name
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Type Your Name"
+      />
+      <p *ngIf="name != ''">Hello, {{ name }}!</p>
+    </label>
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+    <label>
+      Address
+      <input type="text" formControlName="address" />
+    </label>
+    <div class="location-row">
+      <label>
+        City
+        <input type="text" formControlName="city" size="9" />
+      </label>
+      <label>
+        State
+        <select formControlName="state" style="width: 125px">
+          <option value="">Select</option>
+          @for (state of states; track state.value) {
+            <option [value]="state.value">{{ state.label }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Zipcode
+        <input
+          type="text"
+          formControlName="zipcode"
+          inputmode="numeric"
+          pattern="[0-9-]*"
+          size="9"
+          title="Use numbers and dashes only"
+        />
+      </label>
+    </div>
+    <label>
+      Phone number
+      <input type="tel" formControlName="phone" />
+    </label>
+    <label>
+      Comments
+      <textarea formControlName="comments" rows="4"></textarea>
+    </label>
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+    </button>
+    @if (submitted && inputForm.invalid) {
+      <p class="validation-message">All fields are required.</p>
+    }
+  </form>
+</section>

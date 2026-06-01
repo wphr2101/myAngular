@@ -1,0 +1,60 @@
+<section class="nations">
+  <h2>Nations</h2>
+  <label class="search-field">
+    <span>Search (By Nation OR Capital)</span>
+    <input
+      type="search"
+      [value]="searchTerm()"
+      (input)="searchNations($event)"
+    />
+  </label>
+
+  @if (errorMessage()) {
+    <p>{{ errorMessage() }}</p>
+  } @else if (currentNation()) {
+    <div class="nation-slider">
+    <button
+      class="slider-button"
+      type="button"
+      aria-label="Show previous nation"
+      (click)="showPreviousNation()"
+    >
+      &lt;
+    </button>
+
+    <article class="nation-card">
+      <div class="nation-images">
+        <img class="flag" title="Flag"
+          [src]="currentNation().flagImage"
+          [alt]="currentNation().name + ' flag'"
+          [title]="currentNation().name + ' flag'"
+        />
+        <img class="map" title="Map"
+          [src]="currentNation().mapImage"
+          [alt]="currentNation().name + ' map'"
+          [title]="currentNation().name + ' map'"
+        />
+      </div>
+      <div>
+        <h3>{{ currentNation().name }}</h3>
+        <p>Capital: {{ currentNation().capital }}</p>
+        <p>Population: {{ currentNation().population / 1000000 }} Million</p>
+        <p>GDP: {{ currentNation().gdp.toFixed(3) }} Trillion</p>
+        <p>HDI: {{ currentNation().hdi.toFixed(4) }}</p>
+        <p class="counter">{{ currentIndex() + 1 }} of {{ nations().length }}</p>
+      </div>
+    </article>
+
+    <button
+      class="slider-button"
+      type="button"
+      aria-label="Show next nation"
+      (click)="showNextNation()"
+    >
+      &gt;
+    </button>
+    </div>
+  } @else {
+    <p>{{ isLoading() ? 'Loading nations...' : 'No nations found.' }}</p>
+  }
+</section>
