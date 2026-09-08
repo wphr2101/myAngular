@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { apiConfig, apiRequestOptions } from '../api.config';
 
 interface Nation {
   name: string;
@@ -17,9 +18,10 @@ interface Nation {
   templateUrl: './nations.html',
   styleUrl: './nations.css',
 })
-export class Nations implements OnInit {
+export class Nations implements OnDestroy, OnInit {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'https://wphr2101.runasp.net/api/nations';
+  private readonly apiUrl = apiConfig.baseUrl + '/api/nations';
+  private searchTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
   protected readonly currentIndex = signal(0);
   protected readonly nations = signal<Nation[]>([]);
@@ -35,12 +37,37 @@ export class Nations implements OnInit {
     this.loadNations();
   }
 
+  ngOnDestroy() {
+    if (this.searchTimeoutId) {
+      clearTimeout(this.searchTimeoutId);
+    }
+  }
+
   protected searchNations(event: Event) {
     const input = event.target as HTMLInputElement;
-    const result = input.value.trim();
 
     this.searchTerm.set(input.value);
-    this.loadNations(result);
+
+    if (this.searchTimeoutId) {
+      clearTimeout(this.searchTimeoutId);
+    }
+
+    this.searchTimeoutId = setTimeout(() => {
+      this.loadNations(this.searchTerm().trim());
+    }, 350);
+  }
+
+  protected clearSearch() {
+    if (this.searchTimeoutId) {
+      clearTimeout(this.searchTimeoutId);
+    }
+
+    this.searchTerm.set('');
+    this.loadNations();
+  }
+
+  protected retryLoad() {
+    this.loadNations(this.searchTerm().trim());
   }
 
   private loadNations(result = '') {
@@ -50,7 +77,7 @@ export class Nations implements OnInit {
 
     this.isLoading.set(true);
 
-    this.http.get<Nation[]>(url).subscribe({
+    this.http.get<Nation[]>(url, apiRequestOptions).subscribe({
       next: (nations) => {
         this.nations.set(nations);
         this.currentIndex.set(0);

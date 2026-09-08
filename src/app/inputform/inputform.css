@@ -9,10 +9,100 @@
   font-weight: 600;
 }
 
+.form-intro {
+  max-width: 46rem;
+  margin: 0 0 1rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .inputform form {
   display: grid;
   gap: 0.75rem;
   max-width: 24rem;
+}
+
+.form-showcase {
+  display: grid;
+  grid-template-columns: minmax(18rem, 24rem) minmax(18rem, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.form-demo {
+  min-width: 0;
+}
+
+.form-mode-switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.45rem;
+  background: #f9fafb;
+}
+
+.inputform .form-mode-switch button {
+  padding: 0.45rem 0.7rem;
+  border: 0;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: #374151;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.inputform .form-mode-switch button.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.code-sample-panel {
+  min-width: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #111827;
+  color: #e5e7eb;
+  overflow: hidden;
+}
+
+.code-sample-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid #374151;
+  background: #1f2937;
+}
+
+.code-sample-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.code-sample-header span {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.code-sample-panel pre {
+  max-height: 32rem;
+  margin: 0;
+  padding: 0.85rem;
+  overflow: auto;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.code-sample-panel code {
+  font-family: Consolas, "Courier New", monospace;
+  white-space: pre;
 }
 
 .inputform label {
@@ -59,6 +149,10 @@
   cursor: not-allowed;
 }
 
+.inputform .form-mode-switch button:disabled {
+  background: transparent;
+}
+
 .validation-message {
   margin: 0;
   color: #b91c1c;
@@ -66,6 +160,16 @@
 }
 
 @media screen and (max-width: 650px) {
+  .form-showcase {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form-mode-switch {
+    display: grid;
+    width: 100%;
+    max-width: 24rem;
+  }
+
   .location-row {
     grid-template-columns: 1fr;
   }

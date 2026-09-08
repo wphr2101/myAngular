@@ -1,26 +1,43 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
+import { apiConfig, apiRequestOptions } from '../api.config';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
   FormGroup,
+  FormsModule,
+  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 
+type FormMode = 'reactive' | 'template';
+
+interface VisitorCommentForm {
+  name: string;
+  email: string;
+  address: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  phone: string;
+  comments: string;
+}
+
 @Component({
   selector: 'app-inputform',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './inputform.html',
   styleUrl: './inputform.css',
 })
 export class Inputform {
   private readonly http = inject(HttpClient);
-  private readonly insertCommentUrl =
-    'https://wphr2101.runasp.net/api/insertComment';
+  private readonly insertCommentUrl = apiConfig.baseUrl + '/api/insertComment';
 
+  protected formMode: FormMode = 'reactive';
   protected submitted = false;
   protected isSubmitting = false;
+  protected templateModel: VisitorCommentForm = this.createEmptyForm();
 
   protected readonly inputForm = new FormGroup({
     name: new FormControl('', {
@@ -58,7 +75,20 @@ export class Inputform {
   });
 
   protected get name() {
-    return this.inputForm.controls.name.value;
+    return this.formMode === 'reactive'
+      ? this.inputForm.controls.name.value
+      : this.templateModel.name;
+  }
+
+  protected get currentCodeSample() {
+    return this.formMode === 'reactive'
+      ? this.reactiveFormCodeSample
+      : this.templateDrivenFormCodeSample;
+  }
+
+  protected setFormMode(mode: FormMode) {
+    this.formMode = mode;
+    this.submitted = false;
   }
 
   protected showFormValues() {
@@ -70,6 +100,23 @@ export class Inputform {
     }
 
     const values = this.inputForm.getRawValue();
+    this.submitComment(values, () => this.inputForm.reset());
+  }
+
+  protected submitTemplateForm(form: NgForm) {
+    this.submitted = true;
+
+    if (form.invalid) {
+      return;
+    }
+
+    this.submitComment(this.templateModel, () => {
+      this.templateModel = this.createEmptyForm();
+      form.resetForm(this.templateModel);
+    });
+  }
+
+  private submitComment(values: VisitorCommentForm, resetForm: () => void) {
     const comment = {
       name: values.name,
       email: values.email,
@@ -84,11 +131,11 @@ export class Inputform {
     this.isSubmitting = true;
 
     this.http
-      .post<{ message: string }>(this.insertCommentUrl, comment)
+      .post<{ message: string }>(this.insertCommentUrl, comment, apiRequestOptions)
       .subscribe({
         next: (response) => {
           window.alert(response.message);
-          this.inputForm.reset();
+          resetForm();
           this.submitted = false;
           this.isSubmitting = false;
         },
@@ -99,6 +146,63 @@ export class Inputform {
         },
       });
   }
+
+  private createEmptyForm(): VisitorCommentForm {
+    return {
+      name: '',
+      email: '',
+      address: '',
+      city: '',
+      state: '',
+      zipcode: '',
+      phone: '',
+      comments: '',
+    };
+  }
+
+  private readonly reactiveFormCodeSample = `// Reactive Forms
+inputForm = new FormGroup({
+  name: new FormControl('', {
+    nonNullable: true,
+    validators: Validators.required,
+  }),
+  email: new FormControl('', {
+    nonNullable: true,
+    validators: Validators.required,
+  }),
+});
+
+submitReactiveForm() {
+  if (this.inputForm.invalid) {
+    this.inputForm.markAllAsTouched();
+    return;
+  }
+
+  const values = this.inputForm.getRawValue();
+  this.submitComment(values);
+}`;
+
+  private readonly templateDrivenFormCodeSample = `<!-- Template-driven Forms -->
+<form #templateForm="ngForm"
+      (ngSubmit)="submitTemplateForm(templateForm)">
+  <input
+    name="name"
+    [(ngModel)]="templateModel.name"
+    required
+  />
+
+  <button type="submit">
+    Submit
+  </button>
+</form>
+
+submitTemplateForm(form: NgForm) {
+  if (form.invalid) {
+    return;
+  }
+
+  this.submitComment(this.templateModel);
+}`;
 
   protected readonly states = [
     { value: 'AL', label: 'Alabama' },

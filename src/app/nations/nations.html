@@ -2,15 +2,26 @@
   <h2>Nations</h2>
   <label class="search-field">
     <span>Search (By Nation OR Capital)</span>
-    <input
-      type="search"
-      [value]="searchTerm()"
-      (input)="searchNations($event)"
-    />
+    <div class="search-row">
+      <input
+        type="search"
+        [value]="searchTerm()"
+        (input)="searchNations($event)"
+        placeholder="Try Japan, Canada, Taipei..."
+      />
+      @if (searchTerm()) {
+        <button class="clear-button" type="button" (click)="clearSearch()">
+          Clear
+        </button>
+      }
+    </div>
   </label>
 
   @if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <div class="message-panel error-panel" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="retryLoad()">Retry</button>
+    </div>
   } @else if (currentNation()) {
     <div class="nation-slider">
     <button
@@ -54,7 +65,16 @@
       &gt;
     </button>
     </div>
+  } @else if (isLoading()) {
+    <div class="message-panel">
+      <p>Loading nations...</p>
+    </div>
   } @else {
-    <p>{{ isLoading() ? 'Loading nations...' : 'No nations found.' }}</p>
+    <div class="message-panel">
+      <p>No nations found.</p>
+      @if (searchTerm()) {
+        <button type="button" (click)="clearSearch()">Show all nations</button>
+      }
+    </div>
   }
 </section>

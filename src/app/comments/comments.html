@@ -9,7 +9,7 @@
     <p class="status">No comments found.</p>
   } @else {
     <div class="comment-list">
-      @for (comment of comments(); track $index) {
+      @for (comment of pagedComments(); track $index) {
         <article class="comment-card">
           <h3>{{ comment.name }}</h3>
           <p>{{ comment.comments }}</p>
@@ -27,5 +27,22 @@
         </article>
       }
     </div>
+    <nav class="pagination" aria-label="Comments pagination">
+      <button
+        type="button"
+        (click)="showPreviousPage()"
+        [disabled]="currentPage() === 1"
+      >
+        Previous
+      </button>
+      <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+      <button
+        type="button"
+        (click)="showNextPage()"
+        [disabled]="currentPage() === totalPages()"
+      >
+        Next
+      </button>
+    </nav>
   }
 </section>

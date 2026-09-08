@@ -1,0 +1,68 @@
+<section class="observable-demo">
+  <header class="demo-header">
+    <p class="eyebrow">RxJS practice</p>
+    <h2>Observable Demo</h2>
+    <p>
+      This component uses an RxJS Observable to emit a new value every second.
+      Start the stream, stop it, and watch the event log update.
+    </p>
+  </header>
+
+  <div class="observable-layout">
+    <section class="stream-panel" aria-label="Observable stream controls">
+      <div class="stream-actions">
+        <button type="button" class="primary" (click)="startStream()" [disabled]="isRunning()">
+          Start
+        </button>
+        <button type="button" (click)="stopStream()" [disabled]="!isRunning()">
+          Stop
+        </button>
+        <button
+          type="button"
+          (click)="resetStream()"
+          [disabled]="!isRunning() && eventLog().length === 0"
+        >
+          Reset
+        </button>
+      </div>
+
+      <div class="status-row">
+        <span class="status-dot" [class.running]="isRunning()"></span>
+        <span>{{ isRunning() ? 'Stream is running' : 'Stream is stopped' }}</span>
+      </div>
+
+      <article class="event-card">
+        <h3>Latest Emission</h3>
+        @if (latestEvent(); as event) {
+          <div class="event-number">#{{ event.tick }}</div>
+          <p>{{ event.message }}</p>
+          <small>{{ event.createdAt }}</small>
+        } @else {
+          <p>No event emitted yet.</p>
+        }
+      </article>
+
+      <section class="log-section">
+        <h3>Event Log</h3>
+        @if (eventLog().length > 0) {
+          <ol class="event-log">
+            @for (event of eventLog(); track event.tick) {
+              <li>
+                <span>#{{ event.tick }}</span>
+                <strong>{{ event.createdAt }}</strong>
+                <small>{{ event.message }}</small>
+              </li>
+            }
+          </ol>
+        } @else {
+          <p class="empty-log">Start the stream to see emitted values here.</p>
+        }
+      </section>
+    </section>
+
+    <section class="code-panel" aria-label="Observable code sample">
+      <h3>Code Sample</h3>
+      <pre><code>{{ codeSample }}</code></pre>
+    </section>
+  </div>
+</section>

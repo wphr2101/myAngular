@@ -1,62 +1,193 @@
 <section class="inputform">
   <h2>Input Form</h2>
-  <form [formGroup]="inputForm" (ngSubmit)="showFormValues()">
-    <label>
-      Name
-      <input
-        type="text"
-        formControlName="name"
-        placeholder="Type Your Name"
-      />
-      <p *ngIf="name != ''">Hello, {{ name }}!</p>
-    </label>
-    <label>
-      Email
-      <input type="email" formControlName="email" />
-    </label>
-    <label>
-      Address
-      <input type="text" formControlName="address" />
-    </label>
-    <div class="location-row">
-      <label>
-        City
-        <input type="text" formControlName="city" size="9" />
-      </label>
-      <label>
-        State
-        <select formControlName="state" style="width: 125px">
-          <option value="">Select</option>
-          @for (state of states; track state.value) {
-            <option [value]="state.value">{{ state.label }}</option>
+  <p class="form-intro">
+    Please choose to submit the form by using either Reactive or Template-driven
+    Forms. After submit, you can see the result in the Comments.
+  </p>
+
+  <div class="form-showcase">
+    <div class="form-demo">
+      <div class="form-mode-switch" aria-label="Choose form implementation">
+        <button
+          type="button"
+          [class.active]="formMode === 'reactive'"
+          (click)="setFormMode('reactive')"
+        >
+          Reactive Forms
+        </button>
+        <button
+          type="button"
+          [class.active]="formMode === 'template'"
+          (click)="setFormMode('template')"
+        >
+          Template-driven Forms
+        </button>
+      </div>
+
+      @if (formMode === 'reactive') {
+        <form [formGroup]="inputForm" (ngSubmit)="showFormValues()">
+          <label>
+            Name
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Type Your Name"
+            />
+            <p *ngIf="name != ''">Hello, {{ name }}!</p>
+          </label>
+          <label>
+            Email
+            <input type="email" formControlName="email" />
+          </label>
+          <label>
+            Address
+            <input type="text" formControlName="address" />
+          </label>
+          <div class="location-row">
+            <label>
+              City
+              <input type="text" formControlName="city" size="9" />
+            </label>
+            <label>
+              State
+              <select formControlName="state" style="width: 125px">
+                <option value="">Select</option>
+                @for (state of states; track state.value) {
+                  <option [value]="state.value">{{ state.label }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              Zipcode
+              <input
+                type="text"
+                formControlName="zipcode"
+                inputmode="numeric"
+                pattern="[0-9-]*"
+                size="9"
+                title="Use numbers and dashes only"
+              />
+            </label>
+          </div>
+          <label>
+            Phone number
+            <input type="tel" formControlName="phone" />
+          </label>
+          <label>
+            Comments
+            <textarea formControlName="comments" rows="4"></textarea>
+          </label>
+          <button type="submit" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Submitting...' : 'Submit Reactive Form' }}
+          </button>
+          @if (submitted && inputForm.invalid) {
+            <p class="validation-message">All fields are required.</p>
           }
-        </select>
-      </label>
-      <label>
-        Zipcode
-        <input
-          type="text"
-          formControlName="zipcode"
-          inputmode="numeric"
-          pattern="[0-9-]*"
-          size="9"
-          title="Use numbers and dashes only"
-        />
-      </label>
+        </form>
+      } @else {
+        <form #templateForm="ngForm" (ngSubmit)="submitTemplateForm(templateForm)">
+          <label>
+            Name
+            <input
+              type="text"
+              name="name"
+              [(ngModel)]="templateModel.name"
+              placeholder="Type Your Name"
+              required
+            />
+            <p *ngIf="name != ''">Hello, {{ name }}!</p>
+          </label>
+          <label>
+            Email
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="templateModel.email"
+              required
+            />
+          </label>
+          <label>
+            Address
+            <input
+              type="text"
+              name="address"
+              [(ngModel)]="templateModel.address"
+              required
+            />
+          </label>
+          <div class="location-row">
+            <label>
+              City
+              <input
+                type="text"
+                name="city"
+                [(ngModel)]="templateModel.city"
+                size="9"
+                required
+              />
+            </label>
+            <label>
+              State
+              <select
+                name="state"
+                [(ngModel)]="templateModel.state"
+                style="width: 125px"
+                required
+              >
+                <option value="">Select</option>
+                @for (state of states; track state.value) {
+                  <option [value]="state.value">{{ state.label }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              Zipcode
+              <input
+                type="text"
+                name="zipcode"
+                [(ngModel)]="templateModel.zipcode"
+                inputmode="numeric"
+                pattern="[0-9-]*"
+                size="9"
+                title="Use numbers and dashes only"
+                required
+              />
+            </label>
+          </div>
+          <label>
+            Phone number
+            <input
+              type="tel"
+              name="phone"
+              [(ngModel)]="templateModel.phone"
+              required
+            />
+          </label>
+          <label>
+            Comments
+            <textarea
+              name="comments"
+              [(ngModel)]="templateModel.comments"
+              rows="4"
+              required
+            ></textarea>
+          </label>
+          <button type="submit" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Submitting...' : 'Submit Template-driven Form' }}
+          </button>
+          @if (submitted && templateForm.invalid) {
+            <p class="validation-message">All fields are required.</p>
+          }
+        </form>
+      }
     </div>
-    <label>
-      Phone number
-      <input type="tel" formControlName="phone" />
-    </label>
-    <label>
-      Comments
-      <textarea formControlName="comments" rows="4"></textarea>
-    </label>
-    <button type="submit" [disabled]="isSubmitting">
-      {{ isSubmitting ? 'Submitting...' : 'Submit' }}
-    </button>
-    @if (submitted && inputForm.invalid) {
-      <p class="validation-message">All fields are required.</p>
-    }
-  </form>
+
+    <aside class="code-sample-panel" aria-label="Current form code sample">
+      <div class="code-sample-header">
+        <h3>{{ formMode === 'reactive' ? 'Reactive Forms' : 'Template-driven Forms' }}</h3>
+        <span>code sample</span>
+      </div>
+      <pre><code>{{ currentCodeSample }}</code></pre>
+    </aside>
+  </div>
 </section>
