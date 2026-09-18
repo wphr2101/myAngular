@@ -1,15 +1,15 @@
 .observable-demo {
-  margin-top: 1.5rem;
+  max-width: 68rem;
 }
 
 .demo-header {
   margin-bottom: 1rem;
 }
 
-.demo-header h2 {
+.demo-header h1 {
   margin: 0.25rem 0 0;
   font-size: 1.75rem;
-  color: #111827;
+  color: #102a43;
   letter-spacing: 0;
 }
 
@@ -20,7 +20,7 @@
 
 .eyebrow {
   margin: 0;
-  color: #2563eb;
+  color: #146c5a;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0;
@@ -65,8 +65,8 @@ button {
 }
 
 button.primary {
-  border-color: #2563eb;
-  background: #2563eb;
+  border-color: #146c5a;
+  background: #146c5a;
   color: #ffffff;
 }
 
@@ -123,7 +123,7 @@ button:disabled {
 
 .event-number {
   margin-top: 0.55rem;
-  color: #2563eb;
+  color: #146c5a;
   font-size: 1.75rem;
   font-weight: 700;
 }
@@ -151,7 +151,7 @@ button:disabled {
 }
 
 .event-log span {
-  color: #2563eb;
+  color: #146c5a;
   font-weight: 700;
 }
 

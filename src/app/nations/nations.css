@@ -1,12 +1,27 @@
 .nations {
-  margin-top: 1.5rem;
+  max-width: 56rem;
 }
 
-.nations h2 {
-  margin: 0 0 0.75rem;
-  color: #1f2937;
-  font-size: 1.25rem;
-  font-weight: 600;
+.page-heading {
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  color: #146c5a;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.page-heading h1 {
+  margin: 0;
+  color: #102a43;
+  font-size: 2rem;
+}
+
+.page-heading p:not(.eyebrow) {
+  margin: 0.45rem 0 0;
+  color: #627d98;
 }
 
 .search-field {
@@ -29,8 +44,8 @@
 }
 
 .search-field input:focus {
-  border-color: #2563eb;
-  outline: 2px solid #bfdbfe;
+  border-color: #146c5a;
+  outline: 2px solid #cde8e1;
   outline-offset: 1px;
 }
 
@@ -99,7 +114,7 @@
   align-items: start;
   padding: 0.75rem;
   border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  border-radius: 7px;
   background: #ffffff;
   min-height: 8rem;
 }
@@ -152,7 +167,7 @@
   width: 2.25rem;
   height: 2.25rem;
   border: 1px solid #d1d5db;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #ffffff;
   color: #111827;
   cursor: pointer;

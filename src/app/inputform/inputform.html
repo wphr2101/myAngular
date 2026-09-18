@@ -1,8 +1,13 @@
 <section class="inputform">
-  <h2>Input Form</h2>
+  <p class="eyebrow">ANGULAR FORMS</p>
+  <h1>Form Implementation Lab</h1>
   <p class="form-intro">
-    Please choose to submit the form by using either Reactive or Template-driven
-    Forms. After submit, you can see the result in the Comments.
+    Compare reactive and template-driven forms using the same data model,
+    validation rules, and API endpoint.
+  </p>
+  <p class="privacy-note">
+    Demo environment: use fictional information only. Submitted contact details
+    are never displayed publicly.
   </p>
 
   <div class="form-showcase">
@@ -37,7 +42,7 @@
           </label>
           <label>
             Email
-            <input type="email" formControlName="email" />
+            <input type="email" formControlName="email" autocomplete="off" />
           </label>
           <label>
             Address
@@ -75,7 +80,7 @@
           </label>
           <label>
             Comments
-            <textarea formControlName="comments" rows="4"></textarea>
+            <textarea formControlName="comments" rows="4" maxlength="500"></textarea>
           </label>
           <button type="submit" [disabled]="isSubmitting">
             {{ isSubmitting ? 'Submitting...' : 'Submit Reactive Form' }}
@@ -103,6 +108,7 @@
               type="email"
               name="email"
               [(ngModel)]="templateModel.email"
+              autocomplete="off"
               required
             />
           </label>
@@ -169,6 +175,7 @@
               name="comments"
               [(ngModel)]="templateModel.comments"
               rows="4"
+              maxlength="500"
               required
             ></textarea>
           </label>

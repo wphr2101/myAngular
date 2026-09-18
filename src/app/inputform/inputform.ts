@@ -46,7 +46,7 @@ export class Inputform {
     }),
     email: new FormControl('', {
       nonNullable: true,
-      validators: Validators.required,
+      validators: [Validators.required, Validators.email],
     }),
     address: new FormControl('', {
       nonNullable: true,
@@ -70,7 +70,7 @@ export class Inputform {
     }),
     comments: new FormControl('', {
       nonNullable: true,
-      validators: Validators.required,
+      validators: [Validators.required, Validators.maxLength(500)],
     }),
   });
 

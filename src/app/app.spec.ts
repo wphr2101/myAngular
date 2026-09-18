@@ -20,6 +20,8 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, myAngular');
+    expect(compiled.querySelector('.brand strong')?.textContent).toContain(
+      'Customer Operations',
+    );
   });
 });

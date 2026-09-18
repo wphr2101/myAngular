@@ -1,0 +1,138 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.app-header {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  border-bottom: 1px solid #d8e0e8;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  display: flex;
+  width: min(100% - 2rem, 72rem);
+  min-height: 4.5rem;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #102a43;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  place-items: center;
+  border-radius: 6px;
+  background: #146c5a;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-size: 0.95rem;
+}
+
+.brand small {
+  margin-top: 0.08rem;
+  color: #627d98;
+  font-size: 0.72rem;
+}
+
+.primary-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.primary-nav a {
+  padding: 0.55rem 0.7rem;
+  border-radius: 5px;
+  color: #486581;
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.primary-nav a:hover {
+  background: #f0f4f8;
+  color: #102a43;
+}
+
+.primary-nav a.active {
+  background: #e4f2ee;
+  color: #0f5b4c;
+}
+
+.app-main {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  flex: 1;
+  padding: 2.25rem 0 3rem;
+}
+
+.app-footer {
+  display: flex;
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 1.2rem 0 1.5rem;
+  border-top: 1px solid #d8e0e8;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #627d98;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .header-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 0.8rem 0;
+  }
+
+  .primary-nav {
+    width: calc(100% + 0.25rem);
+    gap: 0.05rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+  }
+
+  .primary-nav a {
+    flex: 0 0 auto;
+    padding: 0.48rem 0.55rem;
+    font-size: 0.8rem;
+  }
+
+  .app-main {
+    padding-top: 1.5rem;
+  }
+
+  .app-footer {
+    flex-direction: column;
+  }
+}

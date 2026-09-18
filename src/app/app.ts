@@ -1,20 +1,13 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet, RouterLink} from '@angular/router';
-import { Nations } from "./nations/nations";
-import { Inputform } from './inputform/inputform';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 
 export class App {
-  protected readonly title = signal('myAngular');
+  protected readonly currentYear = new Date().getFullYear();
 }
-
-const routes = [
-  { path: 'nation', component: Nations },
-  { path: 'inputform', component: Inputform }
-];

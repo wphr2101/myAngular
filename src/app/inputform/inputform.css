@@ -1,20 +1,36 @@
 .inputform {
-  margin-top: 1.5rem;
+  max-width: 68rem;
 }
 
-.inputform h2 {
-  margin: 0 0 1rem;
-  color: #1f2937;
-  font-size: 1.25rem;
-  font-weight: 600;
+.eyebrow {
+  margin: 0 0 0.4rem;
+  color: #146c5a;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.inputform h1 {
+  margin: 0;
+  color: #102a43;
+  font-size: 2rem;
 }
 
 .form-intro {
   max-width: 46rem;
-  margin: 0 0 1rem;
-  color: #4b5563;
+  margin: 0.45rem 0 1rem;
+  color: #627d98;
   font-size: 0.95rem;
   line-height: 1.5;
+}
+
+.privacy-note {
+  max-width: 46rem;
+  margin: 0 0 1.25rem;
+  padding: 0.7rem 0.8rem;
+  border-left: 3px solid #146c5a;
+  background: #edf7f4;
+  color: #334e68;
+  font-size: 0.84rem;
 }
 
 .inputform form {
@@ -56,7 +72,7 @@
 }
 
 .inputform .form-mode-switch button.active {
-  background: #2563eb;
+  background: #146c5a;
   color: #ffffff;
 }
 
@@ -138,7 +154,7 @@
   padding: 0.55rem 0.85rem;
   border: 0;
   border-radius: 0.35rem;
-  background: #2563eb;
+  background: #146c5a;
   color: #ffffff;
   cursor: pointer;
   font: inherit;

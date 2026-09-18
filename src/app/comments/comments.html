@@ -1,29 +1,36 @@
 <section class="comments">
-  <h2>Visitor Comments</h2>
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">HTTP + SIGNALS</p>
+      <h1>Visitor Comments</h1>
+      <p>Comments loaded from the ASP.NET Core API with client-side pagination.</p>
+    </div>
+    @if (!isLoading() && !errorMessage()) {
+      <span class="record-count">{{ comments().length }} records</span>
+    }
+  </header>
+
+  <p class="privacy-note">
+    Contact details are intentionally hidden in this public portfolio.
+  </p>
 
   @if (errorMessage()) {
-    <p class="status error">{{ errorMessage() }}</p>
+    <div class="status error" role="alert">{{ errorMessage() }}</div>
   } @else if (isLoading()) {
-    <p class="status">Loading comments...</p>
+    <div class="status">Loading comments...</div>
   } @else if (comments().length === 0) {
-    <p class="status">No comments found.</p>
+    <div class="status">No comments found.</div>
   } @else {
     <div class="comment-list">
       @for (comment of pagedComments(); track $index) {
         <article class="comment-card">
-          <h3>{{ comment.name }}</h3>
-          <p>{{ comment.comments }}</p>
-          <dl>
-            <dt>Email</dt>
-            <dd>{{ comment.email }}</dd>
-            <dt>Address</dt>
-            <dd>
-              {{ comment.address }}, {{ comment.city }}, {{ comment.state }}
-              {{ comment.zipcode }}
-            </dd>
-            <dt>Phone</dt>
-            <dd>{{ comment.phoneNumber }}</dd>
-          </dl>
+          <div class="comment-avatar" aria-hidden="true">
+            {{ comment.name.slice(0, 1).toUpperCase() }}
+          </div>
+          <div>
+            <h2>{{ comment.name }}</h2>
+            <p>{{ comment.comments }}</p>
+          </div>
         </article>
       }
     </div>
