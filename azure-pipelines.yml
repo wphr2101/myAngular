@@ -1,37 +1,77 @@
 trigger:
   branches:
-    include:
-      - main
+    include: [main]
 
 pr:
   branches:
-    include:
-      - main
+    include: [main]
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-24.04
 
 variables:
   nodeVersion: '22.x'
+  apiCommit: 'd6a3f071e4e0b3765cbb5e4551d13e721c8bc9d6'
 
 steps:
   - checkout: self
-    displayName: Checkout source
+    displayName: Checkout Angular source
     fetchDepth: 1
 
-  - task: NodeTool@0
+  - task: UseNode@1
     displayName: Use Node.js $(nodeVersion)
     inputs:
-      versionSpec: $(nodeVersion)
+      version: $(nodeVersion)
 
-  - script: cp src/app/api.config.ci.ts src/app/api.config.ts
-    displayName: Create non-secret CI configuration
+  - task: UseDotNet@2
+    displayName: Use .NET 8 SDK
+    inputs:
+      packageType: sdk
+      version: 8.x
 
-  - script: npm ci
-    displayName: Install dependencies
+  - bash: |
+      set -euo pipefail
+      cp src/app/api.config.ci.ts src/app/api.config.ts
+      npm ci
+      npm test -- --watch=false
+      npm run build -- --configuration production
+    displayName: Test and build Angular
 
-  - script: npm test -- --watch=false
-    displayName: Run unit tests
+  - bash: |
+      set -euo pipefail
+      git clone --no-checkout https://github.com/wphr2101/AppServiceApi.git "$(Agent.TempDirectory)/customer-api"
+      git -C "$(Agent.TempDirectory)/customer-api" checkout --detach "$API_COMMIT"
+      dotnet test "$(Agent.TempDirectory)/customer-api/Tests/CustomerOperations.Api.Tests.csproj" \
+        --configuration Release --logger trx --results-directory "$(Agent.TempDirectory)/api-tests"
+      dotnet publish "$(Agent.TempDirectory)/customer-api/CustomerOperations.Api.csproj" \
+        --configuration Release --no-restore --output "$(Build.ArtifactStagingDirectory)/site"
+      cp -a dist/myAngular/browser/. "$(Build.ArtifactStagingDirectory)/site/wwwroot/"
+      node -e 'const fs = require("node:fs"); fs.writeFileSync(process.env.BUILD_ARTIFACTSTAGINGDIRECTORY + "/site/wwwroot/release-manifest.json", JSON.stringify({ frontendCommit: process.env.BUILD_SOURCEVERSION, apiCommit: process.env.API_COMMIT, buildId: process.env.BUILD_BUILDID, builtAt: new Date().toISOString() }, null, 2));'
+      test -f "$(Build.ArtifactStagingDirectory)/site/CustomerOperations.Api.dll"
+      test -f "$(Build.ArtifactStagingDirectory)/site/wwwroot/client-config.js"
+      if find "$(Build.ArtifactStagingDirectory)/site" -iname 'appsettings*.json' | grep -q .; then
+        echo 'Unexpected server settings in publish output.' >&2
+        exit 1
+      fi
+    env:
+      API_COMMIT: $(apiCommit)
+    displayName: Test API and assemble versioned deployment
 
-  - script: npm run build -- --configuration production
-    displayName: Build production application
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    displayName: Publish API test results
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '$(Agent.TempDirectory)/api-tests/*.trx'
+
+  - task: ArchiveFiles@2
+    displayName: Package the tested site
+    inputs:
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/site'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(Build.ArtifactStagingDirectory)/deploy.zip'
+
+  - publish: '$(Build.ArtifactStagingDirectory)/deploy.zip'
+    artifact: deploy
+    displayName: Publish deployment artifact

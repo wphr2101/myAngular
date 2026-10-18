@@ -1,0 +1,9 @@
+:host { display: block; min-width: 0; }
+.workspace-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem 1.5rem; padding-bottom: 1rem; margin-bottom: 1.75rem; border-bottom: 1px solid #bcccdc; }
+.workspace-name { color: #102a43; font-size: 1rem; }
+.workspace-nav { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; min-width: 0; }
+.workspace-nav a { display: inline-block; padding: .55rem .7rem; border-radius: 5px; color: #486581; font-size: .875rem; font-weight: 600; text-decoration: none; }
+.workspace-nav a:hover { background: #f0f4f8; color: #102a43; }
+.workspace-nav a.active { background: #e4f2ee; color: #0f5b4c; }
+.workspace-nav a:focus-visible { outline: 2px solid #146c5a; outline-offset: 2px; }
+@media (max-width: 650px) { .workspace-heading { align-items: flex-start; flex-direction: column; } .workspace-nav { width: 100%; } .workspace-nav a { padding: .5rem .55rem; font-size: .8125rem; } }

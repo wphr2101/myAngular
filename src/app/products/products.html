@@ -1,0 +1,39 @@
+<section class="products" [attr.aria-busy]="isLoading()">
+  <header class="page-heading">
+    <h1>Products</h1>
+    <div class="heading-actions">
+      <a routerLink="/cart">View cart ({{ cart.itemCount() }})</a>
+      <button type="button" (click)="loadProducts()" [disabled]="isLoading()">Refresh</button>
+    </div>
+  </header>
+  <p class="cart-message" role="status">{{ cartMessage() }}</p>
+
+  @if (isLoading()) {
+    <p class="status" role="status">Loading products...</p>
+  } @else if (errorMessage()) {
+    <div class="status error" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="loadProducts()">Retry</button>
+    </div>
+  } @else if (products().length === 0) {
+    <p class="status" role="status">No products yet.</p>
+  } @else {
+    <p class="record-count">{{ products().length }} products</p>
+    <table>
+      <caption class="sr-only">Product catalog</caption>
+      <thead>
+        <tr><th scope="col">Name</th><th scope="col" class="numeric">Price (USD)</th><th scope="col" class="numeric">Weight (kg)</th><th scope="col"><span class="sr-only">Cart actions</span></th></tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.productId) {
+          <tr>
+            <td>{{ product.name }} @if(product.stockQuantity != null){<small> &middot; {{product.stockQuantity}} in stock</small>}</td>
+            <td class="numeric">{{ product.price | currency:'USD' }}</td>
+            <td class="numeric">{{ product.weightKg | number:'1.3-3' }}</td>
+            <td class="cart-action"><button type="button" (click)="addToCart(product)" [disabled]="cart.checkoutLocked() || cart.quantityFor(product.productId) >= cart.maxQuantity || (product.stockQuantity != null && cart.quantityFor(product.productId) >= product.stockQuantity)" [attr.aria-label]="'Add ' + product.name + ' to cart'">{{product.stockQuantity === 0?'Out of stock':'Add'}}</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

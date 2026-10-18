@@ -1,0 +1,37 @@
+<section class="account">
+  <h1>Account</h1>
+  @if (auth.checking()) { <p role="status">Checking your session...</p> }
+  @if (auth.sessionError()) { <p class="error" role="alert">{{ auth.sessionError() }}</p><button type="button" (click)="retry()" [disabled]="auth.checking()">Retry connection</button> }
+  @if (auth.user(); as user) {
+    <h2>Signed in as {{ user.userName }}</h2>
+    <dl><dt>Customer</dt><dd>{{ user.name }}</dd><dt>Email</dt><dd>{{ user.email }}</dd><dt>Customer ID</dt><dd>{{ user.customerId }}</dd></dl>
+    <div class="actions"><a routerLink="/customer">Customer &amp; delivery details</a><a routerLink="/cart">View cart</a><a routerLink="/orders">My orders</a></div>
+    <button type="button" (click)="logout()" [disabled]="busy()">{{ busy() ? 'Signing out...' : 'Sign out' }}</button>
+  } @else {
+    <div class="modes" role="group" aria-label="Account action">
+      <button type="button" [attr.aria-pressed]="mode() === 'login'" (click)="choose('login')" [disabled]="busy()">Sign in</button>
+      <button type="button" [attr.aria-pressed]="mode() === 'register'" (click)="choose('register')" [disabled]="busy()">Register</button>
+    </div>
+    @if (mode() === 'login') {
+      <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+        <label for="login-user">Username</label><input id="login-user" formControlName="userName" autocomplete="username" maxlength="100" required />
+        <label for="login-password">Password</label><input id="login-password" formControlName="password" type="password" autocomplete="current-password" maxlength="128" required />
+        <button class="primary" type="submit" [disabled]="busy() || auth.checking()">{{ busy() ? 'Signing in...' : 'Sign in to account' }}</button>
+      </form>
+    } @else {
+      <p>Registration creates a user account and a linked customer record.</p>
+      <form [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+        <label for="register-user">Username</label><input id="register-user" formControlName="userName" autocomplete="username" maxlength="100" required aria-describedby="username-help" />
+        <small id="username-help">3-100 letters, numbers, dots, underscores or hyphens.</small>
+        <label for="register-password">Password</label><input id="register-password" formControlName="password" type="password" autocomplete="new-password" minlength="15" maxlength="128" required aria-describedby="password-help" />
+        <small id="password-help">Use a unique passphrase of 15-128 characters.</small>
+        <label for="register-name">Customer name</label><input id="register-name" formControlName="name" autocomplete="name" maxlength="150" required />
+        <label for="register-email">Email</label><input id="register-email" formControlName="email" type="email" autocomplete="email" maxlength="254" required />
+        <label for="register-phone">Phone (optional)</label><input id="register-phone" formControlName="phone" type="tel" autocomplete="tel" maxlength="30" />
+        <button class="primary" type="submit" [disabled]="busy() || auth.checking()">{{ busy() ? 'Creating account...' : 'Create account' }}</button>
+      </form>
+    }
+  }
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (message()) { <p class="success" role="status">{{ message() }}</p> }
+</section>

@@ -65,6 +65,7 @@
 
 .primary-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem;
 }
@@ -107,7 +108,7 @@
   font-size: 0.78rem;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1000px) {
   .header-inner {
     align-items: flex-start;
     flex-direction: column;
@@ -116,9 +117,9 @@
   }
 
   .primary-nav {
-    width: calc(100% + 0.25rem);
+    width: 100%;
     gap: 0.05rem;
-    overflow-x: auto;
+    flex-wrap: wrap;
     padding-bottom: 0.15rem;
   }
 

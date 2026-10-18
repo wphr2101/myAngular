@@ -1,0 +1,16 @@
+<section class="logistics-shell" aria-label="Logistics">
+  <div class="workspace-heading">
+    <strong class="workspace-name">Logistics</strong>
+    <nav class="workspace-nav" aria-label="Logistics navigation">
+      <a routerLink="/products" routerLinkActive="active" ariaCurrentWhenActive="page">Products</a>
+      <a routerLink="/customer" routerLinkActive="active" ariaCurrentWhenActive="page">Customer</a>
+      <a routerLink="/cart" routerLinkActive="active" ariaCurrentWhenActive="page">Cart ({{ cart.itemCount() }})</a>
+      <a routerLink="/account" routerLinkActive="active" ariaCurrentWhenActive="page">Account</a>
+      <a routerLink="/orders" routerLinkActive="active" ariaCurrentWhenActive="page">My orders</a>
+      @if (auth.user()?.role === 'Admin') {
+        <a routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page">Admin</a>
+      }
+    </nav>
+  </div>
+  <router-outlet />
+</section>

@@ -57,3 +57,27 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Logistics and deployment
+
+Logistics groups Products, Customer, Cart, Account, My orders and the role-protected
+Admin workspace. Existing URLs such as /orders/1 remain valid. The backend source
+is https://github.com/wphr2101/AppServiceApi.
+
+Local development uses the ignored src/app/api.config.ts. For a clean checkout,
+copy src/app/api.config.ci.ts there before testing, then configure local values.
+
+Production builds replace it with api.config.production.ts, which reads the
+browser-visible public/client-config.js. The default base URL is the current
+origin. Deployment supplies the existing API access key in that file; server
+credentials, SQL passwords and publish profiles must never be placed there.
+Browser keys are visible to clients; cookie authentication and API role checks
+protect customer/admin operations.
+
+The Azure Pipeline tests the frontend and a pinned backend commit, builds both,
+and publishes a deploy artifact containing deploy.zip and a release manifest.
+The artifact contains no server appsettings files or deployment credentials.
+Deploy the artifact to the existing App Service using an authorized Azure
+session, keeping Azure application settings and the database intact. The
+pipeline itself currently produces the release package; Azure publishing is a
+separate authenticated deployment step.

@@ -114,7 +114,7 @@ h1 {
 
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
   gap: 0.85rem;
   margin-top: 1.25rem;
 }

@@ -1,0 +1,71 @@
+<section class="shopping" aria-labelledby="orders-heading">
+  <div class="page-heading">
+    <h1 id="orders-heading">{{ detail() ? 'Order details' : 'My orders' }}</h1>
+    <a routerLink="/products">Continue shopping</a>
+  </div>
+  @if (detail()) { <p><a routerLink="/orders">Back to my orders</a></p> }
+  @if (auth.checking()) {
+    <p role="status">Checking your session...</p>
+  } @else if (auth.sessionError()) {
+    <p class="error" role="alert">{{ auth.sessionError() }}</p>
+    <button (click)="refreshSession()">Retry session</button>
+  } @else if (!auth.user()) {
+    <p class="empty">Sign in to view your orders.</p>
+    <a routerLink="/account">Sign in</a>
+  } @else if (loading()) {
+    <p role="status">Loading orders...</p>
+  } @else if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+    @if (sessionExpired()) {
+      <button (click)="refreshSession()">Refresh session</button>
+      <a routerLink="/account">Go to account</a>
+    } @else { <button (click)="retry()">Retry</button> }
+  } @else if (receipt(); as order) {
+    <div class="order-heading">
+      <h2>Order #{{ order.orderId }}</h2>
+      <span class="status">{{ order.status }}</span>
+      <span class="status">Payment: {{order.paymentStatus || 'Unpaid'}} (demo)</span>
+      <span class="muted">{{ order.orderDate | date:'medium' }}</span>
+    </div>
+    <div class="cart-layout">
+      <div>
+        @for (line of order.lines; track line.productId) {
+          <div class="order-line">
+            <div><h3>{{ line.name }}</h3><p>{{ line.unitPrice | currency:order.currency }} each &times; {{ line.quantity }}</p></div>
+            <strong>{{ line.lineTotal | currency:order.currency }}</strong>
+          </div>
+        }
+        <p class="order-total">Subtotal <strong>{{ order.subtotal | currency:order.currency }}</strong></p>
+      </div>
+      <aside class="summary" aria-label="Delivery details">
+        <h2>Deliver to</h2>
+        <p>{{ order.recipientName }}</p>
+        <p class="address">{{ order.shippingAddress }}</p>
+        @if(order.paidAt){<p>Marked paid: {{order.paidAt|date:'medium'}}</p>}
+        @if(order.shippedAt){<p>Marked shipped: {{order.shippedAt|date:'medium'}}</p>}
+        <p class="muted">No payment, taxes or delivery fees have been processed.</p>
+      </aside>
+    </div>
+  } @else if (page(); as result) {
+    @if (!result.items.length) {
+      <p class="empty">{{ olderPage() ? 'No older orders.' : 'No orders yet.' }}</p>
+    } @else {
+      <div class="history-list" aria-label="Your orders">
+        @for (order of result.items; track order.orderId) {
+          <article class="history-row">
+            <div><h2><a [routerLink]="['/orders', order.orderId]">Order #{{ order.orderId }}</a></h2><p>{{ order.orderDate | date:'medium' }}</p></div>
+            <span><span class="status">{{ order.status }}</span><br/><small>{{order.paymentStatus || 'Unpaid'}}</small></span>
+            <span>{{ order.itemCount }} {{ order.itemCount === 1 ? 'item' : 'items' }}</span>
+            <strong class="amount">{{ order.subtotal | currency:order.currency }}</strong>
+          </article>
+        }
+      </div>
+    }
+    <nav class="actions" aria-label="Order pages">
+      @if (olderPage()) { <a routerLink="/orders">Newest orders</a> }
+      @if (result.hasMore && result.items.length) {
+        <a routerLink="/orders" [queryParams]="{beforeId: result.items[result.items.length - 1].orderId}">Older orders</a>
+      }
+    </nav>
+  }
+</section>

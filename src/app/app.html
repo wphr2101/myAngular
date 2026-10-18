@@ -20,6 +20,7 @@
         <a routerLink="/comments" routerLinkActive="active">Comments</a>
         <a routerLink="/inputform" routerLinkActive="active">Forms</a>
         <a routerLink="/nations" routerLinkActive="active">Nations</a>
+        <a routerLink="/logistics" [class.active]="inLogistics()" [attr.aria-current]="inLogistics() ? 'page' : null">Logistics</a>
         <a routerLink="/observable" routerLinkActive="active">RxJS</a>
       </nav>
     </div>
