@@ -1,4 +1,4 @@
-interface ClientConfiguration { baseUrl?: string; apiToken?: string; }
+interface ClientConfiguration { baseUrl?: string; }
 
 const runtime = (globalThis as typeof globalThis & {
   customerOperationsConfig?: ClientConfiguration;
@@ -6,9 +6,8 @@ const runtime = (globalThis as typeof globalThis & {
 
 export const apiConfig = {
   baseUrl: runtime?.baseUrl ?? '',
-  apiToken: runtime?.apiToken ?? '',
 };
 
 export const apiRequestOptions = {
-  headers: { 'X-API-Key': apiConfig.apiToken },
+  headers: {} as Record<string, string>,
 };

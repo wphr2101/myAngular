@@ -27,7 +27,9 @@ describe('Products', () => {
     expect(fixture.nativeElement.querySelector('button').disabled).toBe(true);
     const request = http.expectOne(url);
     expect(request.request.method).toBe('GET');
-    expect(request.request.headers.get('X-API-Key')).toBe(apiRequestOptions.headers['X-API-Key']);
+    for (const [name, value] of Object.entries(apiRequestOptions.headers)) {
+      expect(request.request.headers.get(name)).toBe(value);
+    }
     request.flush([{ productId: 7, name: 'Parcel box', price: 12.5, weightKg: 0.125 }]);
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Parcel box');

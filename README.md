@@ -69,10 +69,11 @@ copy src/app/api.config.ci.ts there before testing, then configure local values.
 
 Production builds replace it with api.config.production.ts, which reads the
 browser-visible public/client-config.js. The default base URL is the current
-origin. Deployment supplies the existing API access key in that file; server
-credentials, SQL passwords and publish profiles must never be placed there.
-Browser keys are visible to clients; cookie authentication and API role checks
-protect customer/admin operations.
+origin. This file holds only a base URL, never API keys, server credentials,
+SQL passwords or publish profiles. The API uses HttpOnly session cookies, CSRF
+validation and server-side ownership/role checks for customer/admin operations.
+Public catalog/nations/comment reads do not need a shared key. Contact details
+are excluded from public comment responses. Comment writes also require CSRF.
 
 The Azure Pipeline tests the frontend and a pinned backend commit, builds both,
 and publishes a deploy artifact containing deploy.zip and a release manifest.

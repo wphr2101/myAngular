@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { switchMap } from 'rxjs';
 import { Component, inject } from '@angular/core';
 import { apiConfig, apiRequestOptions } from '../api.config';
 import { CommonModule } from '@angular/common';
@@ -131,7 +132,13 @@ export class Inputform {
     this.isSubmitting = true;
 
     this.http
-      .post<{ message: string }>(this.insertCommentUrl, comment, apiRequestOptions)
+      .get<{ requestToken: string }>(apiConfig.baseUrl + '/api/auth/csrf', {
+        ...apiRequestOptions, withCredentials: true,
+      })
+      .pipe(switchMap(csrf => this.http.post<{ message: string }>(this.insertCommentUrl, comment, {
+        ...apiRequestOptions, withCredentials: true,
+        headers: new HttpHeaders(apiRequestOptions.headers).set('X-CSRF-TOKEN', csrf.requestToken),
+      })))
       .subscribe({
         next: (response) => {
           window.alert(response.message);

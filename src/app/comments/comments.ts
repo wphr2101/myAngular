@@ -4,12 +4,6 @@ import { apiConfig, apiRequestOptions } from '../api.config';
 
 interface VisitorComment {
   name: string;
-  email: string;
-  address: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  phoneNumber: string;
   comments: string;
 }
 
