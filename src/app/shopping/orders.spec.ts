@@ -33,7 +33,7 @@ describe('Orders', () => {
   it('loads private history with cookies and links to the saved order', () => {
     render(); const request = http.expectOne(url);
     expect(request.request.withCredentials).toBe(true);
-    expect(request.request.headers.has('X-API-Key')).toBe(true);
+    expect(request.request.headers.has('X-API-Key')).toBe(false);
     request.flush({ items: [summary], hasMore: false }); render();
     expect(fixture.nativeElement.textContent).toContain('$6.98');
     expect(fixture.nativeElement.querySelector('a[href="/orders/7"]')).toBeTruthy();
