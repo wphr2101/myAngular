@@ -1,0 +1,36 @@
+<aside class="help" aria-label="Logistics help">
+  <button #launcher type="button" class="help-toggle" (click)="open() ? close() : open.set(true)" [attr.aria-expanded]="open()" aria-controls="logistics-help-panel" aria-haspopup="dialog" [attr.aria-label]="open() ? 'Close Logistics help' : 'Open Logistics help'">
+    Logistics help
+  </button>
+  @if (open()) {
+    <section id="logistics-help-panel" class="help-panel" role="dialog" aria-modal="false" aria-labelledby="logistics-help-title" (keydown.escape)="close(); $event.stopPropagation()">
+      <header class="dialog-heading"><h2 id="logistics-help-title">Logistics help</h2><button type="button" class="close" (click)="close()" aria-label="Close help dialog" title="Close">&times;</button></header>
+      <p class="privacy">Do not enter passwords or personal details. Questions may be sent to Azure OpenAI for topic matching. This guide cannot access your account or perform actions.</p>
+      <div class="prompts" role="group" aria-label="Suggested questions">
+        @for (prompt of prompts; track prompt.label) {
+          <button type="button" (click)="ask(prompt.question)" [disabled]="busy()">{{ prompt.label }}</button>
+        }
+      </div>
+      <form (ngSubmit)="ask()" novalidate>
+        <label for="help-question">Your question</label>
+        <div class="question-row">
+          <input #questionInput id="help-question" name="question" [(ngModel)]="question" maxlength="500" autocomplete="off" placeholder="How do I use the shopping cart?" [disabled]="busy()" aria-describedby="help-length" />
+          <button type="submit" class="ask" [disabled]="busy() || question.trim().length < 2">{{ busy() ? 'Finding guide...' : 'Ask' }}</button>
+          <button type="button" (click)="clear()" [disabled]="busy()">Clear</button>
+        </div>
+        <small id="help-length">{{ question.length }}/500</small>
+      </form>
+      @if (busy()) { <p role="status" class="loading">Finding the right guide...</p> }
+      @if (error()) { <p role="alert" class="error">{{ error() }}</p> }
+      @if (answer(); as result) {
+        <section class="answer" aria-live="polite" aria-atomic="true" aria-label="Help answer">
+          <div class="answer-heading"><h2>{{ result.title }}</h2><span class="mode">{{ result.mode === 'ai' ? 'AI topic match' : result.mode === 'policy' ? 'Policy' : 'Guide' }}</span></div>
+          <p class="asked">{{ answeredQuestion() }}</p>
+          <p>{{ result.text }}</p>
+          @if (result.steps.length) { <ol>@for (step of result.steps; track $index) { <li>{{ step }}</li> }</ol> }
+          <nav aria-label="Related Logistics pages">@for (link of result.links; track link.path) { <a [routerLink]="link.path">{{ link.label }}</a> }</nav>
+        </section>
+      }
+    </section>
+  }
+</aside>

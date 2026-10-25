@@ -45,6 +45,38 @@ describe('Products', () => {
     expect(fixture.nativeElement.querySelector('table')).toBeNull();
   });
 
+  it('formats product names while keeping stock separate, including zero stock', () => {
+    http.expectOne(url).flush([
+      { productId: 1, name: 'Apples - 1 kg bag', price: 3.99, weightKg: 1, stockQuantity: 23 },
+      { productId: 2, name: 'Whole Milk - 1 L', price: 2.49, weightKg: 1.03, stockQuantity: 0 },
+      { productId: 3, name: 'Parcel box', price: 1, weightKg: 1, stockQuantity: null },
+      { productId: 4, name: 'Tape', price: 1, weightKg: 0.1 },
+    ]);
+    fixture.detectChanges();
+    const rows = fixture.nativeElement.querySelectorAll('tbody tr') as NodeListOf<HTMLTableRowElement>;
+    expect(rows[0].cells[0].textContent).toContain('Apples (1KG Bag)');
+    expect(rows[0].querySelector('small')?.textContent).toBe('Stock: 23');
+    expect(rows[1].cells[0].textContent).toContain('Whole Milk (1L)');
+    expect(rows[1].querySelector('small')?.textContent).toBe('Stock: 0');
+    expect(rows[1].querySelector('button')?.disabled).toBe(true);
+    expect(rows[2].querySelector('small')).toBeNull();
+    expect(rows[3].querySelector('small')).toBeNull();
+  });
+
+  it('keeps the original product name in cart data', () => {
+    http.expectOne(url).flush([{ productId: 1, name: 'Apples - 1 kg bag', price: 3.99, weightKg: 1, stockQuantity: 23 }]);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('tbody button').click();
+    expect(TestBed.inject(CartStore).lines()[0].name).toBe('Apples - 1 kg bag');
+  });
+
+  it('renders names as text, not HTML supplied by a pipe', () => {
+    http.expectOne(url).flush([{ productId: 1, name: '<img src=x> - 1 kg bag', price: 1, weightKg: 1 }]);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('tbody img')).toBeNull();
+    expect(fixture.nativeElement.querySelector('tbody td').textContent).toContain('<img src=x> (1KG Bag)');
+  });
+
   it('retries after a service failure', () => {
     http.expectOne(url).flush({}, { status: 503, statusText: 'Unavailable' });
     fixture.detectChanges();

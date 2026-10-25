@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { apiConfig, apiRequestOptions } from '../api.config';
+import { ProductNamePipe } from './product-name-pipe';
 
 export interface Product {
   productId: number;
@@ -16,7 +17,7 @@ export interface Product {
 
 @Component({
   selector: 'app-products',
-  imports: [CurrencyPipe, DecimalPipe, RouterLink],
+  imports: [CurrencyPipe, DecimalPipe, RouterLink, ProductNamePipe],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })

@@ -20,5 +20,6 @@ th:last-child { width: 18%; }
 .cart-action { text-align: right; }
 .cart-action button { padding-inline: 0.5rem; }
 .numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.stock { display: inline-block; margin-inline-start: .35rem; color: #627d98; font-size: .75rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 560px) { th, td { padding: 0.6rem 0.4rem; font-size: 0.8rem; } }
