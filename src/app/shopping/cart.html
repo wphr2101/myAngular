@@ -1,5 +1,5 @@
 <section class="shopping cart-page">
-  <header class="page-heading"><h1>Shopping cart</h1><a routerLink="/products">Continue shopping</a></header>
+  <header class="page-heading"><h1>Shopping Cart</h1><a routerLink="/products">Continue shopping</a></header>
   <p class="notice">Cart drafts clear on reload. Placing an order saves it to your customer account. No payment is collected.</p>
   @if (checkout.receipt(); as order) {
     <section class="order-confirmation" aria-label="Order confirmation">
@@ -22,7 +22,7 @@
           @for (line of cart.lines(); track line.productId) {
             <article class="cart-line">
               <div class="line-description"><h2>{{ line.name }}</h2><p>{{ line.unitPriceCents / 100 | currency:'USD' }} each</p></div>
-              <div class="quantity"><label [for]="'quantity-' + line.productId">Quantity</label><input [id]="'quantity-' + line.productId" type="number" min="1" max="99" step="1" [value]="line.quantity" (change)="changeQuantity(line.productId, $event)" [disabled]="cart.checkoutLocked()" [attr.aria-label]="'Quantity for ' + line.name" /></div>
+              <div class="quantity"><label [for]="'quantity-' + line.productId">Quantity</label><input [id]="'quantity-' + line.productId" type="number" min="1" [max]="cart.quantityLimit(line.productId)" step="1" [value]="line.quantity" (change)="changeQuantity(line.productId, $event)" [disabled]="cart.checkoutLocked()" [attr.aria-label]="'Quantity for ' + line.name" /></div>
               <div class="line-total"><strong>{{ line.unitPriceCents * line.quantity / 100 | currency:'USD' }}</strong><button type="button" (click)="remove(line.productId)" [disabled]="cart.checkoutLocked()" [attr.aria-label]="'Remove ' + line.name">Remove</button></div>
             </article>
           }
@@ -52,7 +52,7 @@
             <button type="button" (click)="checkout.useLatestPrices()">Use latest prices</button>
           }
           <button type="button" class="primary" (click)="checkout.place()" [disabled]="!auth.user() || auth.checking() || !cart.customer() || checkout.busy() || checkout.updatedPrices().length > 0">
-            {{ checkout.busy() ? 'Placing order...' : checkout.uncertain() ? 'Retry same submission' : 'Place order' }}
+            {{ checkout.busy() ? 'Placing order...' : checkout.uncertain() ? 'Retry same submission' : 'Place Order' }}
           </button>
           <p class="muted">Creates a Pending order. No payment is taken.</p>
         </div>

@@ -21,7 +21,7 @@ export class Cart {
     const input = event.target as HTMLInputElement;
     if (!this.cart.setQuantity(productId, input.valueAsNumber)) {
       input.value = String(this.cart.quantityFor(productId));
-      this.quantityError.set('Quantity must be a whole number from 1 to 99.');
+      this.quantityError.set(`Quantity must be a whole number from 1 to ${this.cart.quantityLimit(productId)}.`);
     } else { this.quantityError.set(''); }
   }
 

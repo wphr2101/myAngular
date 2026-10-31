@@ -11,7 +11,7 @@ pool:
 
 variables:
   nodeVersion: '22.x'
-  apiCommit: '8a790e72067ab87bc156fceb3b47f830762536a8'
+  apiCommit: 'a117bb89ef6294e941b207b795e3a4675cd9889e'
 
 steps:
   - checkout: self

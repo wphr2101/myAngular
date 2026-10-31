@@ -1,5 +1,5 @@
 <section class="shopping">
-  <header class="page-heading"><h1>Customer details</h1><a routerLink="/cart">View cart</a></header>
+  <header class="page-heading"><h1>Customer Details</h1><a routerLink="/cart">View cart</a></header>
   <p class="notice">Session draft only. Details are cleared when the page reloads; no account or order is created.</p>
   @if (auth.user(); as user) {
     <p>Signed in as {{ user.userName }}. Changes here apply only to the delivery draft, not your registered profile.</p>
@@ -9,17 +9,17 @@
   @if (cart.checkoutLocked()) { <p role="status">An order submission is pending. Return to the cart to check or retry it.</p> }
   <form [formGroup]="form" (ngSubmit)="save()" [attr.inert]="cart.checkoutLocked() ? '' : null" novalidate>
     <div class="form-grid">
-      <div class="field"><label for="customer-name">Customer name</label><input id="customer-name" formControlName="name" autocomplete="name" maxlength="150" required [attr.aria-invalid]="form.controls.name.touched && form.controls.name.invalid" aria-describedby="name-error" />
+      <div class="field"><label for="customer-name">Customer Name</label><input id="customer-name" formControlName="name" autocomplete="name" maxlength="150" required [attr.aria-invalid]="form.controls.name.touched && form.controls.name.invalid" aria-describedby="name-error" />
         @if (form.controls.name.touched && form.controls.name.invalid) { <small id="name-error" class="error">Enter a customer name.</small> }
       </div>
       <div class="field"><label for="customer-email">Email</label><input id="customer-email" formControlName="email" type="email" autocomplete="email" maxlength="254" required [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" aria-describedby="email-error" />
         @if (form.controls.email.touched && form.controls.email.invalid) { <small id="email-error" class="error">Enter a valid email address.</small> }
       </div>
       <div class="field"><label for="customer-phone">Phone (optional)</label><input id="customer-phone" formControlName="phone" type="tel" autocomplete="tel" maxlength="30" /></div>
-      <div class="field"><label for="recipient">Recipient name</label><input id="recipient" formControlName="recipientName" autocomplete="shipping name" maxlength="150" required [attr.aria-invalid]="form.controls.recipientName.touched && form.controls.recipientName.invalid" aria-describedby="recipient-error" />
+      <div class="field"><label for="recipient">Recipient Name</label><input id="recipient" formControlName="recipientName" autocomplete="shipping name" maxlength="150" required [attr.aria-invalid]="form.controls.recipientName.touched && form.controls.recipientName.invalid" aria-describedby="recipient-error" />
         @if (form.controls.recipientName.touched && form.controls.recipientName.invalid) { <small id="recipient-error" class="error">Enter a recipient name.</small> }
       </div>
-      <div class="field full"><label for="shipping-address">Delivery address</label><textarea id="shipping-address" formControlName="shippingAddress" autocomplete="shipping street-address" rows="3" maxlength="500" required [attr.aria-invalid]="form.controls.shippingAddress.touched && form.controls.shippingAddress.invalid" aria-describedby="address-error"></textarea>
+      <div class="field full"><label for="shipping-address">Delivery Address</label><textarea id="shipping-address" formControlName="shippingAddress" autocomplete="shipping street-address" rows="3" maxlength="500" required [attr.aria-invalid]="form.controls.shippingAddress.touched && form.controls.shippingAddress.invalid" aria-describedby="address-error"></textarea>
         @if (form.controls.shippingAddress.touched && form.controls.shippingAddress.invalid) { <small id="address-error" class="error">Enter a delivery address.</small> }
       </div>
     </div>

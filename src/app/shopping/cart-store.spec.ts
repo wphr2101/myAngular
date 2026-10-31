@@ -35,6 +35,38 @@ describe('CartStore', () => {
     expect(store.subtotalCents()).toBe(0);
     expect(store.totalWeightKg()).toBe(0);
   });
+  it('limits additions and quantity edits to the available stock', () => {
+    expect(store.add({ ...apples, stockQuantity: 23 })).toBe(true);
+    expect(store.quantityLimit(1)).toBe(23);
+    expect(store.setQuantity(1, 23)).toBe(true);
+    expect(store.subtotalCents()).toBe(9177);
+    expect(store.setQuantity(1, 24)).toBe(false);
+    expect(store.setQuantity(1, 96)).toBe(false);
+    expect(store.add({ ...apples, stockQuantity: 23 })).toBe(false);
+    expect(store.quantityFor(1)).toBe(23);
+    expect(store.setQuantity(1, 22)).toBe(true);
+    expect(store.add({ ...apples, stockQuantity: 23 })).toBe(true);
+    expect(store.quantityFor(1)).toBe(23);
+  });
+  it('rejects zero or invalid stock and still caps plentiful stock at 99', () => {
+    for (const stockQuantity of [0, -1, 1.5, NaN, Infinity]) {
+      expect(store.add({ ...apples, stockQuantity })).toBe(false);
+    }
+    expect(store.lines()).toEqual([]);
+    expect(store.add({ ...apples, stockQuantity: 150 })).toBe(true);
+    expect(store.quantityLimit(1)).toBe(99);
+    expect(store.setQuantity(1, 99)).toBe(true);
+    expect(store.setQuantity(1, 100)).toBe(false);
+  });
+  it('uses the default limit when stock is unknown without losing a known limit', () => {
+    store.add({ ...apples, stockQuantity: null });
+    expect(store.quantityLimit(1)).toBe(99);
+    store.clearCart();
+    store.add({ ...apples, stockQuantity: 3 });
+    store.add(apples);
+    expect(store.quantityLimit(1)).toBe(3);
+    expect(store.setQuantity(1, 4)).toBe(false);
+  });
   it('rejects malformed products but allows free products', () => {
     expect(store.add({ ...apples, price: NaN })).toBe(false);
     expect(store.add({ ...apples, price: -1 })).toBe(false);
