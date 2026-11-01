@@ -2,7 +2,7 @@
   <header class="page-heading">
     <h1>Products</h1>
     <div class="heading-actions">
-      <a routerLink="/cart">View cart ({{ cart.itemCount() }})</a>
+      <a routerLink="/cart">View Cart ({{ cart.itemCount() }})</a>
       <button type="button" (click)="loadProducts()" [disabled]="isLoading()">Refresh</button>
     </div>
   </header>

@@ -62,6 +62,7 @@ describe('App', () => {
     const element=fixture.nativeElement as HTMLElement;
     const nav=()=>element.querySelector('nav[aria-label="Logistics navigation"]')!;
     expect(nav().querySelector('a[href="/admin"]')).toBeNull();
+    expect(nav().querySelector('a[href="/orders"]')?.textContent).toBe('My Orders');
     TestBed.inject(CartStore).add({productId:1,name:'Apples',price:3.99,weightKg:1});fixture.detectChanges();
     expect(nav().querySelector('a[href="/cart"]')?.textContent).toContain('Cart (1)');
     user.set({role:'Admin'});fixture.detectChanges();

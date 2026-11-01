@@ -5,7 +5,7 @@
   @if (auth.user(); as user) {
     <h2>Signed in as {{ user.userName }}</h2>
     <dl><dt>Customer</dt><dd>{{ user.name }}</dd><dt>Email</dt><dd>{{ user.email }}</dd><dt>Customer ID</dt><dd>{{ user.customerId }}</dd></dl>
-    <div class="actions"><a routerLink="/customer">Customer &amp; delivery details</a><a routerLink="/cart">View cart</a><a routerLink="/orders">My orders</a></div>
+    <div class="actions"><a routerLink="/customer">Customer &amp; Delivery Details</a><a routerLink="/cart">View Cart</a><a routerLink="/orders">My Orders</a></div>
     <button type="button" (click)="logout()" [disabled]="busy()">{{ busy() ? 'Signing out...' : 'Sign out' }}</button>
   } @else {
     <div class="modes" role="group" aria-label="Account action">

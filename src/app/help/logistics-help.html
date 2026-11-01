@@ -1,10 +1,10 @@
 <aside class="help" aria-label="Logistics help">
   <button #launcher type="button" class="help-toggle" (click)="open() ? close() : open.set(true)" [attr.aria-expanded]="open()" aria-controls="logistics-help-panel" aria-haspopup="dialog" [attr.aria-label]="open() ? 'Close Logistics help' : 'Open Logistics help'">
-    Logistics help
+    Logistics Help
   </button>
   @if (open()) {
     <section id="logistics-help-panel" class="help-panel" role="dialog" aria-modal="false" aria-labelledby="logistics-help-title" (keydown.escape)="close(); $event.stopPropagation()">
-      <header class="dialog-heading"><h2 id="logistics-help-title">Logistics help</h2><button type="button" class="close" (click)="close()" aria-label="Close help dialog" title="Close">&times;</button></header>
+      <header class="dialog-heading"><h2 id="logistics-help-title">Logistics Help</h2><button type="button" class="close" (click)="close()" aria-label="Close help dialog" title="Close">&times;</button></header>
       <p class="privacy">Do not enter passwords or personal details. Questions may be sent to Azure OpenAI for topic matching. This guide cannot access your account or perform actions.</p>
       <div class="prompts" role="group" aria-label="Suggested questions">
         @for (prompt of prompts; track prompt.label) {

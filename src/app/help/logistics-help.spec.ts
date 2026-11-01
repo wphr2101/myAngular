@@ -7,7 +7,7 @@ import { LogisticsHelp } from './logistics-help';
 
 describe('LogisticsHelp dialog', () => {
   let fixture: ComponentFixture<LogisticsHelp>;
-  const guide: HelpAnswer = { topic: 'cart', title: 'Use the shopping cart', text: 'Session draft only.', steps: ['Open Products.'], links: [{ label: 'Open Cart', path: '/cart' }], mode: 'guide' };
+  const guide: HelpAnswer = { topic: 'cart', title: 'Use the Shopping Cart', text: 'Session draft only.', steps: ['Open Products.'], links: [{ label: 'Open Cart', path: '/cart' }], mode: 'guide' };
   const ask = vi.fn();
   beforeEach(async () => {
     ask.mockReset().mockReturnValue(of(guide));
@@ -33,6 +33,7 @@ describe('LogisticsHelp dialog', () => {
     expect(root().querySelector('[role="dialog"]')).toBeNull();
     await open();
     expect(root().querySelector('[role="dialog"]')?.getAttribute('aria-modal')).toBe('false');
+    expect(root().querySelector('#logistics-help-title')?.textContent).toBe('Logistics Help');
     expect(document.activeElement).toBe(root().querySelector('input'));
   });
 

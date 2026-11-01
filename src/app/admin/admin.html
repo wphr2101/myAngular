@@ -6,7 +6,7 @@
     <nav class="admin-tabs" aria-label="Administration views">
       <button [class.active]="tab() === 'inventory'" (click)="choose('inventory')" [disabled]="!canLeave()">Inventory</button>
       <button [class.active]="tab() === 'orders'" (click)="choose('orders')" [disabled]="!canLeave()">Orders</button>
-      <button [class.active]="tab() === 'movements'" (click)="choose('movements')" [disabled]="!canLeave()">Stock history</button>
+      <button [class.active]="tab() === 'movements'" (click)="choose('movements')" [disabled]="!canLeave()">Stock History</button>
     </nav>
     @if(error()){<p class="error" role="alert">{{error()}}</p>}
     @if(message()){<p class="success" role="status">{{message()}}</p>}
@@ -19,7 +19,7 @@
           } @empty {<p>No products found.</p>}
         </div>
         <form [formGroup]="form" (ngSubmit)="restock()" class="restock">
-          <h2>Add stock</h2>
+          <h2>Add Stock</h2>
           <label for="stock-product">Product</label><select id="stock-product" formControlName="productId"><option [ngValue]="0">Choose product</option>@for(p of inventory();track p.productId){<option [ngValue]="p.productId">{{p.name}}</option>}</select>
           <label for="stock-quantity">Quantity to add</label><input id="stock-quantity" type="number" min="1" max="100000" step="1" formControlName="quantity"/>
           <label for="stock-reason">Reason</label><input id="stock-reason" maxlength="250" formControlName="reason"/>
@@ -27,7 +27,7 @@
         </form>
       </div>
     }@else if(tab()==='orders'){
-      <h2>Customer orders</h2>
+      <h2>Customer Orders</h2>
       @for(order of orders()?.items;track order.orderId){
         <article class="admin-order">
           <div><button class="order-link" (click)="select(order.orderId)" [disabled]="busy()">Order #{{order.orderId}}</button><p>{{order.customerName}} &middot; {{order.orderDate|date:'short'}}</p></div>
@@ -40,7 +40,7 @@
       }@empty{<p>No orders found.</p>}
       <div class="actions">@if(cursor()){<button (click)="latest()" [disabled]="busy()">Newest orders</button>}@if(orders()?.hasMore){<button (click)="older()" [disabled]="busy()">Older orders</button>}</div>
       @if(detail();as d){
-        <section class="order-detail" aria-label="Selected order"><h2>Order #{{d.order.orderId}} details</h2>
+        <section class="order-detail" aria-label="Selected order"><h2>Order #{{d.order.orderId}} Details</h2>
           <p>{{d.order.recipientName}}</p><p class="address">{{d.order.shippingAddress}}</p>
           @if(!d.stockDeducted){<p class="notice">Legacy order: stock will be deducted when marked shipped. Restock before shipping.</p>}
           <ul>@for(line of d.order.lines;track line.productId){<li>{{line.name}} &times; {{line.quantity}}: {{line.lineTotal|currency:'USD'}}</li>}</ul>
@@ -48,7 +48,7 @@
         </section>
       }
     }@else{
-      <h2>Stock history</h2><p class="muted">Latest 50 movements</p>
+      <h2>Stock History</h2><p class="muted">Latest 50 movements</p>
       @for(m of movements();track m.movementId){<article class="movement"><strong>{{m.productName}}</strong><span>{{m.quantityChange>0?'+':''}}{{m.quantityChange}} &rarr; {{m.stockAfter}} remaining</span><p>{{m.reason}} @if(m.orderId){ &middot; Order #{{m.orderId}}}</p><p class="muted">{{m.actor}} &middot; {{m.createdAt|date:'medium'}}</p></article>}@empty{<p>No stock movements yet.</p>}
     }
   }

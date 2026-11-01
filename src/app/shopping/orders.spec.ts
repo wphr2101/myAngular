@@ -36,6 +36,7 @@ describe('Orders', () => {
     expect(request.request.headers.has('X-API-Key')).toBe(false);
     request.flush({ items: [summary], hasMore: false }); render();
     expect(fixture.nativeElement.textContent).toContain('$6.98');
+    expect(fixture.nativeElement.querySelector('h1').textContent.trim()).toBe('My Orders');
     expect(fixture.nativeElement.querySelector('a[href="/orders/7"]')).toBeTruthy();
   });
   it('does not request orders for a guest or while checking the session', () => {
@@ -51,12 +52,13 @@ describe('Orders', () => {
     query.next(convertToParamMap({ beforeId: '20' })); render();
     http.expectOne(url + '?beforeId=20').flush({ items: [summary], hasMore: true }); render();
     expect(fixture.nativeElement.querySelector('a[href="/orders?beforeId=7"]')).toBeTruthy();
-    expect(fixture.nativeElement.textContent).toContain('Newest orders');
+    expect(fixture.nativeElement.textContent).toContain('Newest Orders');
   });
   it('reloads a detail from the API when the component is recreated', () => {
     params.next(convertToParamMap({ id: '7' })); render();
     http.expectOne(url + '/7').flush(receipt); render();
     expect(fixture.nativeElement.textContent).toContain('Example street');
+    expect(fixture.nativeElement.querySelector('h1').textContent.trim()).toBe('Order Details');
     fixture.destroy(); fixture = TestBed.createComponent(Orders); render();
     http.expectOne(url + '/7').flush(receipt); render();
     expect(fixture.nativeElement.textContent).toContain('Order #7');

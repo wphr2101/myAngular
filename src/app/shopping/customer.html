@@ -1,5 +1,5 @@
 <section class="shopping">
-  <header class="page-heading"><h1>Customer Details</h1><a routerLink="/cart">View cart</a></header>
+  <header class="page-heading"><h1>Customer Details</h1><a routerLink="/cart">View Cart</a></header>
   <p class="notice">Session draft only. Details are cleared when the page reloads; no account or order is created.</p>
   @if (auth.user(); as user) {
     <p>Signed in as {{ user.userName }}. Changes here apply only to the delivery draft, not your registered profile.</p>

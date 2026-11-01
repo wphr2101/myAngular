@@ -1,5 +1,5 @@
 <section class="shopping cart-page">
-  <header class="page-heading"><h1>Shopping Cart</h1><a routerLink="/products">Continue shopping</a></header>
+  <header class="page-heading"><h1>Shopping Cart</h1><a routerLink="/products">Continue Shopping</a></header>
   <p class="notice">Cart drafts clear on reload. Placing an order saves it to your customer account. No payment is collected.</p>
   @if (checkout.receipt(); as order) {
     <section class="order-confirmation" aria-label="Order confirmation">
@@ -10,11 +10,11 @@
       <p>{{ order.recipientName }}</p><p class="address">{{ order.shippingAddress }}</p>
       <p>No payment, taxes or delivery fees have been processed.</p>
       <button type="button" (click)="checkout.receipt.set(null)">Dismiss confirmation</button>
-      <p><a [routerLink]="['/orders', order.orderId]">View saved order</a></p>
+      <p><a [routerLink]="['/orders', order.orderId]">View Saved Order</a></p>
     </section>
   }
   @if (cart.lines().length === 0) {
-    <div class="empty" role="status"><h2>Your cart is empty</h2><a routerLink="/products">Browse products</a></div>
+    <div class="empty" role="status"><h2>Your cart is empty</h2><a routerLink="/products">Browse Products</a></div>
   } @else {
     <div class="cart-layout">
       <div>
@@ -38,16 +38,16 @@
         @if (cart.customer(); as customer) {
           <p class="customer-name">{{ customer.name }}</p><p>{{ customer.email }}</p>
           @if (customer.phone) { <p>{{ customer.phone }}</p> }
-          <h3>Deliver to</h3><p>{{ customer.recipientName }}</p><p class="address">{{ customer.shippingAddress }}</p>
-          <a routerLink="/customer">Edit customer details</a>
+          <h3>Deliver To</h3><p>{{ customer.recipientName }}</p><p class="address">{{ customer.shippingAddress }}</p>
+          <a routerLink="/customer">Edit Customer Details</a>
         } @else {
-          <p>No customer details saved.</p><a routerLink="/customer">Add customer details</a>
+          <p>No customer details saved.</p><a routerLink="/customer">Add Customer Details</a>
         }
         <div class="checkout">
           @if (!auth.user()) { <p><a routerLink="/account">Sign in to place an order</a></p> }
           @if (checkout.error()) { <p class="error" role="alert">{{ checkout.error() }}</p> }
           @if (checkout.updatedPrices().length) {
-            <h3>Latest prices</h3>
+            <h3>Latest Prices</h3>
             <ul>@for (line of checkout.updatedPrices(); track line.productId) { <li>{{ line.name }}: {{ line.unitPrice | currency:'USD' }} each</li> }</ul>
             <button type="button" (click)="checkout.useLatestPrices()">Use latest prices</button>
           }
