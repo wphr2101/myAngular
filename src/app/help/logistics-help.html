@@ -12,7 +12,7 @@
         }
       </div>
       <form (ngSubmit)="ask()" novalidate>
-        <label for="help-question">Your question</label>
+        <label for="help-question">Your Question</label>
         <div class="question-row">
           <input #questionInput id="help-question" name="question" [(ngModel)]="question" maxlength="500" autocomplete="off" placeholder="How do I use the shopping cart?" [disabled]="busy()" aria-describedby="help-length" />
           <button type="submit" class="ask" [disabled]="busy() || question.trim().length < 2">{{ busy() ? 'Finding guide...' : 'Ask' }}</button>

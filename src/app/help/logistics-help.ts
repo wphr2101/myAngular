@@ -24,9 +24,9 @@ export class LogisticsHelp {
   private readonly questionInput = viewChild<ElementRef<HTMLInputElement>>('questionInput');
   private readonly launcher = viewChild<ElementRef<HTMLButtonElement>>('launcher');
   protected readonly prompts = [
-    { label: 'Create an account', question: 'How do I create an account?' },
-    { label: 'Use the cart', question: 'How do I use the shopping cart?' },
-    { label: 'Place an order', question: 'How do I place an order?' },
+    { label: 'Create an Account', question: 'How do I create an account?' },
+    { label: 'Use the Cart', question: 'How do I use the shopping cart?' },
+    { label: 'Place an Order', question: 'How do I place an order?' },
   ];
 
   constructor() {

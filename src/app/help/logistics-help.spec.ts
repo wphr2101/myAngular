@@ -45,6 +45,18 @@ describe('LogisticsHelp dialog', () => {
     expect(document.activeElement).toBe(root().querySelector('.help-toggle'));
   });
 
+  it('uses title case labels without changing the suggested question', async () => {
+    await open();
+    const prompts = Array.from(root().querySelectorAll<HTMLButtonElement>('.prompts button'));
+    expect(prompts.map(button => button.textContent?.trim())).toEqual([
+      'Create an Account', 'Use the Cart', 'Place an Order',
+    ]);
+    expect(root().querySelector('label[for="help-question"]')?.textContent).toBe('Your Question');
+    prompts[1].click();
+    fixture.detectChanges(); await fixture.whenStable();
+    expect(ask).toHaveBeenCalledWith('How do I use the shopping cart?');
+  });
+
   it('renders the verified guide, mode and safe related link', async () => {
     await open(); await submit();
     expect(ask).toHaveBeenCalledWith('How do I use the cart?');
